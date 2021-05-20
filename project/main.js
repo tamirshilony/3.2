@@ -2,7 +2,7 @@
 const DButils = require("./routes/utils/DButils");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
-require("dotenv").config();
+require("dotenv").config({path: 'project/.env'});
 //#endregion
 //#region express configures
 var express = require("express");
@@ -17,7 +17,7 @@ app.use(express.json()); // parse application/json
 app.use(
     session({
         cookieName: "session", // the cookie key name
-        secret: "blabla", // the encryption key
+        secret: process.env.COOKIE_SECRET, // the encryption key
         duration: 24 * 60 * 60 * 1000, // expired after 20 sec
         activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
         cookie: {
