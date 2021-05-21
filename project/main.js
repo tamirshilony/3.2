@@ -80,6 +80,10 @@ app.use("/users", users);
 // app.use("/players", players);
 app.use("/league", league);
 app.use("/teams", teams);
+<<<<<<< HEAD
+=======
+app.use("/players", players);
+>>>>>>> e07af041966a3026d2f87ae33f345882e9994268
 app.use(auth);
 
 app.use(function(err, req, res, next) {
