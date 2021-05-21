@@ -1,6 +1,6 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
-const TEAM_ID = "85";
+// const TEAM_ID = "85";
 
 // async function getPlayerFullDetailsById(player_id){
 //     const player_info = axios.get(`${api_domain}/players/${id}`, {
@@ -12,7 +12,7 @@ const TEAM_ID = "85";
 
 async function getPlayerIdsByTeam(team_id) {
     let player_ids_list = [];
-    const team = await axios.get(`${api_domain}/teams/${TEAM_ID}`, {
+    const team = await axios.get(`${api_domain}/teams/${team_id}`, {
         params: {
             include: "squad",
             api_token: process.env.api_token,
