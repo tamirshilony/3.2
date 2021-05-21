@@ -78,6 +78,7 @@ app.get("/alive", (req, res) => res.send("I'm alive"));
 app.use("/users", users);
 app.use("/league", league);
 app.use("/teams", teams);
+
 app.use(auth);
 
 app.use(function(err, req, res, next) {

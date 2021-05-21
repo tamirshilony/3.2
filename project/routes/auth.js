@@ -6,6 +6,10 @@ const bcrypt = require("bcryptjs");
 router.post("/Register", async(req, res, next) => {
     try {
         // parameters exists
+        if(!(req.body.username && req.body.password &&
+            req.body.fname && req.body.lname && req.body.country &&
+            req.body.email && req.body.pic))
+            throw { status: 409, message: "At least one field is missing" };
         // valid parameters
         // username exists
         const users = await DButils.execQuery(
