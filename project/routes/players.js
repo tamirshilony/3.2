@@ -23,3 +23,5 @@ router.get("/playerSearch/:playerName", async(req, res, next) => {
         next(error);
     }
 });
+
+module.exports = router;

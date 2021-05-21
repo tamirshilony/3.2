@@ -16,7 +16,7 @@ router.get("/teamFullDetails/:teamId", async(req, res, next) => {
     }
 });
 
-router.get("/teamSearch/:teamName", async(req, res, next ) => {
+router.get("/teamSearch/:teamName", async(req, res, next) => {
     try {
         // get all id that match the teamName
         const match_team_id = await teams_utils.findMatchTeams(req.params.teamName);
@@ -24,7 +24,7 @@ router.get("/teamSearch/:teamName", async(req, res, next ) => {
         res.send(teams_details);
     } catch (error) {
         next(error);
-    }  
+    }
 })
 
 module.exports = router;
