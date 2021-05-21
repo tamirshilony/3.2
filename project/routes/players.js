@@ -11,3 +11,15 @@ router.get("/playerDetails/:playerId", async(req, res, next) => {
         next(error);
     }
 });
+
+router.get("/playerSearch/:playerName", async(req, res, next) => {
+    let player_details = [];
+    try {
+        // get all id that match the playerName
+        const match_player_id = await players_utils.findMatchPlayer(req.params.playerName);
+        const tplyer_details = await players_utils.getPlayersInfo(match_player_id);
+        res.send(player_details);
+    } catch (error) {
+        next(error);
+    }
+});
