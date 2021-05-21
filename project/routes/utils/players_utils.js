@@ -20,7 +20,7 @@ async function getPlayerIdsByTeam(team_id) {
 async function getPlayerIdsByName(player_name) {
     let player_ids_list = [];
     // get all plyers match to player_name
-    const candidates_players = await axios.get(`${api_domain}players/search/${player_name}`, {
+    const candidates_players = await axios.get(`${api_domain}/players/search/${player_name}`, {
         params: {
             api_token: process.env.api_token,
         },
@@ -28,7 +28,8 @@ async function getPlayerIdsByName(player_name) {
     // loop over all candidates_players
     candidates_players.data.data.map((players) => {
         // check if the player is in superliga
-        if (teams_utils.isSuperligaTeam(players.team_id)) {
+        const isSuperligaTeam = teams_utils.isSuperligaTeam(players.team_id);
+        if (isSuperligaTeam) {
             player_ids_list.push(players.player_id)
         }
     });
