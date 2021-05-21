@@ -1,5 +1,6 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
+<<<<<<< HEAD
 // const TEAM_ID = "85";
 
 // async function getPlayerFullDetailsById(player_id){
@@ -9,6 +10,10 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 //         },
 //     })
 // }
+=======
+const teams_utils = require("./utils/teams_utils");
+// const TEAM_ID = "85";
+>>>>>>> 61596494384c5368e1a2c3e38b2e5e0c15addc67
 
 async function getPlayerIdsByTeam(team_id) {
     let player_ids_list = [];
@@ -21,6 +26,24 @@ async function getPlayerIdsByTeam(team_id) {
     team.data.data.squad.data.map((player) =>
         player_ids_list.push(player.player_id)
     );
+    return player_ids_list;
+}
+
+async function getPlayerIdsByName(player_name) {
+    let player_ids_list = [];
+    // get all plyers match to player_name
+    const candidates_players = await axios.get(`${api_domain}players/search/${player_name}`, {
+        params: {
+            api_token: process.env.api_token,
+        },
+    });
+    // loop over all candidates_players
+    candidates_players.data.data.map((players) => {
+        // check if the player is in superliga
+        if (teams_utils.isSuperligaTeam(players.team_id)) {
+            player_ids_list.push(players.player_id)
+        }
+    });
     return player_ids_list;
 }
 
@@ -59,5 +82,11 @@ async function getPlayersByTeam(team_id) {
     return players_info;
 }
 
+async function findMatchPlayers(player_name) {
+    let match_players_id = await getPlayerIdsByName(player_name);
+    return match_players_id;
+}
+
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
+exports.findMatchPlayers = findMatchPlayers;
