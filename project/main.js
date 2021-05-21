@@ -17,7 +17,7 @@ app.use(express.json()); // parse application/json
 app.use(
     session({
         cookieName: "session", // the cookie key name
-        secret: "cgf", // the encryption key
+        secret: process.env.COOKIE_SECRET, // the encryption key
         duration: 24 * 60 * 60 * 1000, // expired after 20 sec
         activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
         cookie: {
@@ -77,13 +77,9 @@ app.get("/alive", (req, res) => res.send("I'm alive"));
 
 // Routings
 app.use("/users", users);
-// app.use("/players", players);
+app.use("/players", players);
 app.use("/league", league);
 app.use("/teams", teams);
-<<<<<<< HEAD
-=======
-app.use("/players", players);
->>>>>>> e07af041966a3026d2f87ae33f345882e9994268
 app.use(auth);
 
 app.use(function(err, req, res, next) {
