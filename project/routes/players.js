@@ -4,8 +4,8 @@ const players_utils = require("./utils/players_utils");
 
 router.get("/playerDetails/:playerId", async(req, res, next) => {
     try {
-        const player_details = await players_utils.getLeagueDetails();
-        res.send(league_details);
+        const player_details = await players_utils.getPlayerCard(req.params.playerId);
+        res.send(player_details);
     } catch (error) {
         next(error);
     }
