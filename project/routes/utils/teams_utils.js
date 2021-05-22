@@ -12,26 +12,32 @@ async function isSuperligaTeam(id) {
     return team.data.data.league.data.id == LEAGUE_ID;
 }
 
+
+
 async function searchTeamsByName(team_name) {
     let relevent_teams = [];
+    // get all teams match to team_name
     const teams_least = await axios.get(`${api_domain}/teams/search/${team_name}`, {
         params: {
             include: "league",
             api_token: process.env.api_token,
         },
     });
-    teams_least.data.data.map(async function(team){
-        if (team.league.data.id === LEAGUE_ID)
-            return team
-    });
+    // find only teams in superliga
+    for(let i = 0; i < teams_least.data.data.length; i++){
+        if(teams_least.data.data[i].league.data.id == LEAGUE_ID){
+            relevent_teams.push(teams_least.data.data[i]);
+        }
+    }
     return extractReleventTeamData(relevent_teams);
 }
 
 
 function extractReleventTeamData(teams_least) {
     return teams_least.map((team) => {
-        const { name, logo_path } = team.data;
+        const {id, name, logo_path } = team;
         return {
+            id: id,
             name: name,
             logo: logo_path,
         };
