@@ -12,6 +12,7 @@ const config = {
     }
 };
 
+
 const pool = new sql.ConnectionPool(config);
 const poolConnect = pool.connect();
 
@@ -30,7 +31,7 @@ exports.execQuery = async function(query) {
 //   if (pool) {
 //     pool.close(() => console.log("connection pool closed"));
 //   }
-// });
+
 
 // poolConnect.then(() => {
 //   console.log("pool closed");
