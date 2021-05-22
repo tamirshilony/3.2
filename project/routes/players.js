@@ -14,10 +14,8 @@ router.get("/playerDetails/:playerId", async(req, res, next) => {
 router.get("/playerSearch/:playerName", async(req, res, next) => {
     try {
         // get all id that match the playerName
-        const match_player_id = await players_utils.findMatchPlayers(req.params.playerName);
-        // extract the player data
-        const player_details = await players_utils.getPlayersInfo(match_player_id);
-        res.send(player_details);
+        const players_details = await players_utils.findMatchPlayers(req.params.playerName);
+        res.send(players_details);
     } catch (error) {
         next(error);
     }

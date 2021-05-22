@@ -18,22 +18,28 @@ async function getPlayerIdsByTeam(team_id) {
 }
 
 async function getPlayerIdsByName(player_name) {
-    let player_ids_list = [];
+    let players_ids_list = [];
+    let promises = [];
+    let player_list = [];
     // get all plyers match to player_name
     const candidates_players = await axios.get(`${api_domain}/players/search/${player_name}`, {
         params: {
             api_token: process.env.api_token,
+            include: "team",
         },
     });
     // loop over all candidates_players
-    candidates_players.data.data.map((players) => {
-        // check if the player is in superliga
-        const isSuperligaTeam = teams_utils.isSuperligaTeam(players.team_id);
-        if (isSuperligaTeam) {
-            player_ids_list.push(players.player_id)
-        }
-    });
-    return player_ids_list;
+    candidates_players.data.data.map((player) => 
+        promises.push(
+            teams_utils.isSuperligaTeam(player.team_id)
+        )
+    );
+    players_ids_list = await Promise.all(promises);
+    for(let i = 0; i < players_ids_list.length; i++){
+        if(players_ids_list[i])
+            player_list.push(candidates_players.data.data[i]);    
+    }
+    return player_list;
 }
 
 async function getPlayersInfo(players_ids_list) {
@@ -65,6 +71,19 @@ function extractRelevantPlayerData(players_info) {
     });
 }
 
+function extractRelevantPlayerinfo(players_info) {
+    return players_info.map((player_info) => {
+        const { fullname, image_path, position_id } = player_info;
+        const { name } = player_info.team.data;
+        return {
+            name: fullname,
+            image: image_path,
+            position: position_id,
+            team_name: name,
+        };
+    });
+}
+
 async function getPlayersByTeam(team_id) {
     let player_ids_list = await getPlayerIdsByTeam(team_id);
     let players_info = await getPlayersInfo(player_ids_list);
@@ -73,7 +92,7 @@ async function getPlayersByTeam(team_id) {
 
 async function findMatchPlayers(player_name) {
     let match_players_id = await getPlayerIdsByName(player_name);
-    return match_players_id;
+    return extractRelevantPlayerinfo(match_players_id);
 }
 
 exports.getPlayersByTeam = getPlayersByTeam;

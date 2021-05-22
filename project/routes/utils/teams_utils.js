@@ -9,7 +9,7 @@ async function isSuperligaTeam(id) {
             api_token: process.env.api_token,
         },
     });
-    return team.data.data.league.data.id === LEAGUE_ID;
+    return team.data.data.league.data.id == LEAGUE_ID;
 }
 
 async function searchTeamsByName(team_name) {
@@ -20,9 +20,9 @@ async function searchTeamsByName(team_name) {
             api_token: process.env.api_token,
         },
     });
-    teams_least.data.data.map((team) => {
+    teams_least.data.data.map(async function(team){
         if (team.league.data.id === LEAGUE_ID)
-            relevent_teams.push(team);
+            return team
     });
     return extractReleventTeamData(relevent_teams);
 }
