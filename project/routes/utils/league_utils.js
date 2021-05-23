@@ -41,5 +41,15 @@ async function getLeagueGames() {
     }
 }
 
+async function sortLeagueGames(fillter) {
+    try {
+        const fillter_table = (await DButils.execQuery(`select * FROM games order by '${fillter}'asc`));
+        return fillter_table;
+    } catch (error) {
+        next(error);
+    }
+}
+
 exports.getLeagueDetails = getLeagueDetails;
 exports.getLeagueGames = getLeagueGames;
+exports.sortLeagueGames = sortLeagueGames;

@@ -22,6 +22,16 @@ router.get("/getAllGames", async(req, res, next) => {
     }
 });
 
+router.get("/getAllGamesSorted/:fillter", async(req, res, next) => {
+    try {
+        const fillter = req.params.fillter;
+        const fillter_league_games = await league_utils.sortLeagueGames(fillter);
+        res.send(fillter_league_games);
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.post("/addGame", async(req, res, next) => {
     try {
         await DButils.execQuery(
