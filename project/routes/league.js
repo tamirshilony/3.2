@@ -45,4 +45,15 @@ router.post("/updateGame/:gameId", async(req, res, next) => {
     }
 });
 
+router.post("/insertActivity/:gameId", async(req, res, next) => {
+    try {
+        await DButils.execQuery(`insert into dbo.game_activity (game_id, date, time, minute, description) VALUES (
+            '${req.params.gameId}', '${req.body.date}','${req.body.time}', '${req.body.minute}','${req.body.description}') `);
+        res.status(201).send("activity added");
+
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;
