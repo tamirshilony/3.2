@@ -32,4 +32,14 @@ async function getLeagueDetails() {
     }
 }
 
+async function getLeagueGames() {
+    try {
+        const table_game = (await DButils.execQuery("select * from games"));
+        return table_game;
+    } catch (error) {
+        next(error);
+    }
+}
+
 exports.getLeagueDetails = getLeagueDetails;
+exports.getLeagueGames = getLeagueGames;
