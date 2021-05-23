@@ -1,6 +1,7 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const LEAGUE_ID = 271;
+const DButils = require("./DButils");
 
 async function getLeagueDetails() {
     const league = await axios.get(
@@ -18,19 +19,17 @@ async function getLeagueDetails() {
             },
         }
     );
-    return {
-        league_name: league.data.data.name,
-        current_season_name: league.data.data.season.data.name,
-        current_stage_name: stage.data.data.name,
-        // next game details should come from DB
-    };
+    try {
+        const game = (await DButils.execQuery("SELECT top 1 * FROM games order by date,time asc"));
+        return {
+            league_name: league.data.data.name,
+            current_season_name: league.data.data.season.data.name,
+            current_stage_name: stage.data.data.name,
+            next_game: game
+        };
+    } catch (error) {
+        next(error);
+    }
 }
 
-async function getNextGame() {
-    next_game = DButils.execQuery("SELECT * FROM games order by date,time desc limit 1")
-}
-
-async function getLeagueGames() {
-
-}
 exports.getLeagueDetails = getLeagueDetails;

@@ -11,4 +11,13 @@ router.get("/getDetails", async(req, res, next) => {
     }
 });
 
+router.get("/getAllGames", async(req, res, next) => {
+    try {
+        const league_game = await league_utils.getLeagueGames();
+        res.send(league_game);
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;
