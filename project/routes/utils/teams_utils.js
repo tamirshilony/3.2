@@ -13,8 +13,6 @@ async function isSuperligaTeam(id) {
     return team.data.data.league.data.id == LEAGUE_ID;
 }
 
-
-
 async function searchTeamsByName(team_name) {
     let relevent_teams = [];
     // get all teams match to team_name
@@ -55,7 +53,6 @@ async function getTeamById(team_id){
     return extractReleventTeamData(team_info);
 }
 
-
 async function getRoundNameById(round_id){
     const round_info = await axios.get(`${api_domain}/rounds/${round_id}`, {
         params: {
@@ -67,11 +64,11 @@ async function getRoundNameById(round_id){
 
 function extractReleventTeamData(team) {
     const {id, name, logo_path } = team;
-        return {
-            id: id,
-            name: name,
-            logo: logo_path,
-            };
+    return {
+        id: id,
+        name: name,
+        logo: logo_path,
+        };
 }
 
 async function extractFullTeamData(team_info){
@@ -103,11 +100,6 @@ async function extractFullTeamData(team_info){
 }
 
 async function extractTeamPastFixtures(past_fixure){
-    // let promises = [];
-    // // filter out fixutres from other seasons
-    // past_fixures.filter(future_fixure => 
-    //     future_fixure.season_id == SEASON_ID).map((past_fixure) => 
-    //         promises.push(async () =>{
     const {localteam_id, visitorteam_id, round_id, winner_team_id} = past_fixure;
     const {localteam_score, visitorteam_score, ht_score} = past_fixure.scores;
     const {date, time} = past_fixure.time.starting_at;
@@ -138,9 +130,6 @@ async function extractTeamPastFixtures(past_fixure){
 }
 
 async function extractTeamFutureFixtures(future_fixure){
-    // let promises = [];
-    // future_fixures.map(async (future_fixure) => 
-    //     promises.push(async () =>{
     const {localteam_id, visitorteam_id, round_id} = future_fixure;
     const {date, time} = future_fixure.time.starting_at;
     const {localteam_position, visitorteam_position} = future_fixure.standings;
@@ -157,7 +146,6 @@ async function extractTeamFutureFixtures(future_fixure){
         away_position: visitorteam_position,
     };
 }
-
 
 exports.isSuperligaTeam = isSuperligaTeam;
 exports.searchTeamsByName = searchTeamsByName;
