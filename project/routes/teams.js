@@ -30,7 +30,7 @@ router.get("/teamSearch/:teamName", async(req, res, next) => {
 router.get("/getTeamById/:teamId", async(req, res, next) => {
     try {
         // get all id that match the teamName
-        const teams_details = await teams_utils.getTeamById([req.params.teamId]);
+        const teams_details = await teams_utils.getTeamById(req.params.teamId);
         res.send(teams_details);
     } catch (error) {
         next(error);
@@ -40,7 +40,7 @@ router.get("/getTeamById/:teamId", async(req, res, next) => {
 router.get("/getTeamFullData/:teamId", async(req, res, next) => {
     try {
         // get all id that match the teamName
-        const teams_details = await teams_utils.getTeamFullData([req.params.teamId]);
+        const teams_details = await teams_utils.getTeamFullData(req.params.teamId);
         res.send(teams_details);
     } catch (error) {
         next(error);
