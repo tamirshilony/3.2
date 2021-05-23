@@ -33,7 +33,7 @@ async function searchTeamsByName(team_name) {
 }
 
 async function getTeamFullData(team_id){
-    const team_info = await axios.get(`${api_domain}/teams/${id}`, {
+    const team_info = await axios.get(`${api_domain}/teams/${team_id}`, {
         params: {
             include: ["latest","upcoming"],
             api_token: process.env.api_token,
@@ -64,6 +64,15 @@ async function getTeamById(team_id){
     return extractReleventTeamData(teams_info);
 }
 
+
+async function getRoundById(round_id){
+    const round_info = await axios.get(`${api_domain}/rounds/${round_id}`, {
+        params: {
+            api_token: process.env.api_token,
+        },
+    });
+}
+
 function extractReleventTeamData(teams_least) {
     return teams_least.map((team) => {
         const {id, name, logo_path } = team;
@@ -83,13 +92,13 @@ function extractFullTeamData(team_info){
         short_name: short_code,
         foundation: founded,
         logo: logo_path,
-        past_fixures: extractPastFixtures(team_info.latest.data),
-        future_fixtures: extractFutureFixtures(team_info.upcoming.data),
+        past_fixures: extractTeamPastFixtures(team_info.latest.data),
+        future_fixtures: extractTeamFutureFixtures(team_info.upcoming.data),
     };
 
 }
 
-function extractPastFixtures(past_fixures){
+function extractTeamPastFixtures(past_fixures){
     return past_fixures.map((past_fixure) => {
         const {localteam_id, visitorteam_id, round_id, winner_team_id} = past_fixure;
         const {localteam_score, visitorteam_score, ht_score} = past_fixure.scores;
@@ -101,7 +110,7 @@ function extractPastFixtures(past_fixures){
         return { 
             home_team: getTeamById(localteam_id),
             away_team: getTeamById(visitorteam_id),
-            // round_id = get_round
+            round_id = getRoundById,
             winner: (winner_team_id == localteam_id) ? home_team : away_team,
             home_score: localteam_score,
             away_score: visitorteam_score,
@@ -118,7 +127,7 @@ function extractPastFixtures(past_fixures){
     });   
 }
 
-function extractFutureFixtures(future_fixures){
+function extractTeamFutureFixtures(future_fixures){
     return future_fixures.map((future_fixure) => {
         const {localteam_id, visitorteam_id, round_id, winner_team_id} = future_fixure;
         const {date, time} = future_fixure.time.starting_at;
@@ -126,7 +135,7 @@ function extractFutureFixtures(future_fixures){
         return { 
             home_team: getTeamById(localteam_id),
             away_team: getTeamById(visitorteam_id),
-            // round_id = get_round
+            round_id = getRoundById,
             date: date,
             time: time,
             home_position: localteam_position,
