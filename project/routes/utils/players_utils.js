@@ -66,6 +66,7 @@ async function getPlayersInfo(players_ids_list) {
         )
     );
     let players_info = await Promise.all(promises);
+    
     return extractRelevantPlayerData(players_info);
 }
 
