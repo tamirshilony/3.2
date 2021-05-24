@@ -41,10 +41,10 @@ async function getLeagueGames() {
     }
 }
 
-async function sortLeagueGames(fillter) {
+async function sortLeagueGames(value) {
     try {
-        const fillter_table = (await DButils.execQuery(`select * FROM games order by '${fillter}'asc`));
-        return fillter_table;
+        const sorted_table = (await DButils.execQuery(`select * FROM games order by '${value}'asc`));
+        return sorted_table;
     } catch (error) {
         next(error);
     }

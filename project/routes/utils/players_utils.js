@@ -28,6 +28,11 @@ async function infoById(id) {
     return info;
 }
 
+async function fillterPlayers(players_id, fiilter) {
+
+
+}
+
 async function getPlayerIdsByName(player_name) {
     let players_ids_list = [];
     let promises = [];
@@ -66,7 +71,7 @@ async function getPlayersInfo(players_ids_list) {
         )
     );
     let players_info = await Promise.all(promises);
-    
+
     return extractRelevantPlayerData(players_info);
 }
 
@@ -129,6 +134,12 @@ async function findMatchPlayers(player_name) {
     return extractRelevantPlayerinfo(match_players_id);
 }
 
+async function findMatchPlayers1(player_name, fiilter) {
+    let match_players_id = await getPlayerIdsByName(player_name);
+    let fillter_players_id = await fillterPlayers(match_players_id, fiilter);
+    return extractRelevantPlayerinfo(fillter_players_id);
+}
+
 async function getPlayerCard(id) {
     player_info = await infoById(id);
     return extractAllPlayerinfo(player_info);
@@ -137,4 +148,5 @@ async function getPlayerCard(id) {
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
 exports.findMatchPlayers = findMatchPlayers;
+exports.findMatchPlayers1 = findMatchPlayers1;
 exports.getPlayerCard = getPlayerCard;
