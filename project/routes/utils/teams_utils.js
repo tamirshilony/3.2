@@ -28,7 +28,8 @@ async function searchTeamsByName(team_name) {
             relevent_teams.push(teams_least.data.data[i]);
         }
     }
-    return extractReleventTeamData(relevent_teams);
+
+    return relevent_teams.map(team => extractReleventTeamData(team));
 }
 
 async function getTeamFullData(team_id){
