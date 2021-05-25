@@ -11,27 +11,43 @@ router.get("/playerDetails/:playerId", async(req, res, next) => {
     }
 });
 
-router.get("/playerSearch/:playerName/:position", async(req, res, next) => {
-    try {
-        // get all require info about players that match the playerName
-        const players_details = await players_utils.findMatchPlayers(req.params.playerName);
-        let fillter_players_details = [];
+router.use("/playerSearch/:playerName", async function(req, res, next) {
+    let fillter_position = req.query.position;
+    let fillter_team = req.query.team_name;
+    if (fillter_position === undefined & fillter_team === undefined) {
+        next();
+    } else {
+        try {
+            // get all require info about players that match the playerName
+            const players_details = await players_utils.findMatchPlayers(req.params.playerName);
+            // get the position number and team name fiilter
+            let fillter_players_details = [];
+            // fiilter the data by position if needed
+            if (fillter_position != undefined) {
+                for (let i = 0; i < players_details.length; i++) {
+                    if (players_details[i].position === fillter_position)
+                        fillter_players_details.push(players_details[i]);
+                }
+            }
+            // fiilter the data by team name if needed
+            if (fillter_team != undefined) {
+                for (let i = 0; i < players_details.length; i++) {
+                    if (players_details[i].team_name === fillter_team)
+                        fillter_players_details.push(players_details[i]);
+                }
+            }
+            // checking if there are results
+            if (fillter_players_details.length === 0) {
+                res.send("no match results")
+            } else {
+                res.send(fillter_players_details);
+            }
+        } catch (error) {
+            next(error);
+        }
 
-        res.send(players_details);
-    } catch (error) {
-        next(error);
     }
-});
 
-router.get("/playerSearch/:playerName/:team_name", async(req, res, next) => {
-    try {
-        // get all require info about players that match the playerName
-        const players_details = await players_utils.findMatchPlayers(req.params.playerName, req.params.fillter);
-
-        res.send(players_details);
-    } catch (error) {
-        next(error);
-    }
 });
 
 router.get("/playerSearch/:playerName", async(req, res, next) => {

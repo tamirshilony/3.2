@@ -134,11 +134,6 @@ async function findMatchPlayers(player_name) {
     return extractRelevantPlayerinfo(match_players_id);
 }
 
-async function findMatchPlayers1(player_name, fiilter) {
-    let match_players_id = await getPlayerIdsByName(player_name);
-    let fillter_players_id = await fillterPlayers(match_players_id, fiilter);
-    return extractRelevantPlayerinfo(fillter_players_id);
-}
 
 async function getPlayerCard(id) {
     player_info = await infoById(id);
@@ -148,5 +143,4 @@ async function getPlayerCard(id) {
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
 exports.findMatchPlayers = findMatchPlayers;
-exports.findMatchPlayers1 = findMatchPlayers1;
 exports.getPlayerCard = getPlayerCard;
