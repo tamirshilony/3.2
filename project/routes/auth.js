@@ -7,8 +7,8 @@ router.post("/Register", async(req, res, next) => {
     try {
         // parameters exists
         if (!(req.body.username && req.body.password &&
-                req.body.fname && req.body.lname && req.body.country &&
-                req.body.email && req.body.pic))
+                req.body.firstname && req.body.lastname && req.body.country &&
+                req.body.email && req.body.image_url))
             throw { status: 409, message: "At least one field is missing" };
         // valid parameters
         // username exists
@@ -28,7 +28,7 @@ router.post("/Register", async(req, res, next) => {
 
         // add the new username
         await DButils.execQuery(
-            `INSERT INTO dbo.users (username, password, fname, lname, country, email, pic) VALUES ('${req.body.username}', '${hash_password}','${req.body.fname}', '${req.body.lname}','${req.body.country}','${req.body.email}','${req.body.pic}')`
+            `INSERT INTO dbo.users (username, password, fname, lname, country, email, pic) VALUES ('${req.body.username}', '${hash_password}','${req.body.firstname}', '${req.body.lastname}','${req.body.country}','${req.body.email}','${req.body.image_url}')`
         );
         res.status(201).send("user created");
     } catch (error) {
