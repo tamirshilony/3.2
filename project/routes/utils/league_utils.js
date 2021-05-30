@@ -37,7 +37,7 @@ async function getLeagueGames() {
         const table_game = (await DButils.execQuery("select * from games"));
         return table_game;
     } catch (error) {
-        next(error);
+        return null
     }
 }
 
@@ -45,8 +45,8 @@ async function sortLeagueGames(value) {
     try {
         const sorted_table = (await DButils.execQuery(`select * FROM games order by '${value}'asc`));
         return sorted_table;
-    } catch (error) {
-        next(error);
+    } catch (error){
+        return null
     }
 }
 

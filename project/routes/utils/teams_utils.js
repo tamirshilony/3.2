@@ -4,13 +4,16 @@ const LEAGUE_ID = 271;
 const SEASON_ID = 17328;
 
 async function isSuperligaTeam(id) {
-    const team = await axios.get(`${api_domain}/teams/${id}`, {
-        params: {
-            include: "league",
-            api_token: process.env.api_token,
-        },
-    });
-    return team.data.data.league.data.id == LEAGUE_ID;
+    if(id){
+        const team = await axios.get(`${api_domain}/teams/${id}`, {
+            params: {
+                include: "league",
+                api_token: process.env.api_token,
+            },
+        });
+        if(team.data.data.league !== undefined)
+            return team.data.data.league.data.id == LEAGUE_ID;
+    }
 }
 
 async function searchTeamsByName(team_name) {
@@ -24,7 +27,7 @@ async function searchTeamsByName(team_name) {
     });
     // find only teams in superliga
     for(let i = 0; i < teams_least.data.data.length; i++){
-        if(teams_least.data.data[i].league.data.id == LEAGUE_ID){
+        if(teams_least.data.data[i].league !== undefined && teams_least.data.data[i].league.data.id == LEAGUE_ID){
             relevent_teams.push(teams_least.data.data[i]);
         }
     }
@@ -140,7 +143,7 @@ async function extractTeamFutureFixtures(future_fixure){
     return { 
         home_team: home_team,
         away_team: away_team,
-        round_id: round_name,
+        round_name: round_name,
         date: date,
         time: time,
         home_position: localteam_position,

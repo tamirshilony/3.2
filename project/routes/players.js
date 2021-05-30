@@ -7,6 +7,8 @@ router.get("/playerDetails/:playerId", async(req, res, next) => {
         const player_details = await players_utils.getPlayerCard(req.params.playerId);
         res.send(player_details);
     } catch (error) {
+        error.message = "No such player ID";
+        error.status = 400;
         next(error);
     }
 });
@@ -37,24 +39,23 @@ router.use("/playerSearch/:playerName", async function(req, res, next) {
                 }
             }
             // checking if there are results
-            if (fillter_players_details.length === 0) {
-                res.send("no match results")
-            } else {
-                res.send(fillter_players_details);
-            }
+            if (fillter_players_details.length === 0) 
+                res.status(201).send("no match results")
+            res.send(fillter_players_details);
         } catch (error) {
             next(error);
         }
 
     }
-
 });
 
 router.get("/playerSearch/:playerName", async(req, res, next) => {
     try {
         // get all require info about players that match the playerName
-        const players_details = await players_utils.findMatchPlayers(req.params.playerName);
-        res.send(players_details);
+        const fillter_players_details = await players_utils.findMatchPlayers(req.params.playerName);
+        if (fillter_players_details.length === 0) 
+            res.status(201).send("no match results")
+        res.send(fillter_players_details);
     } catch (error) {
         next(error);
     }
