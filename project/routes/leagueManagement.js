@@ -41,11 +41,13 @@ router.use(async function(req, res, next) {
 router.post("/addGame", async(req, res, next) => {
     try {
         await DButils.execQuery(
-            `INSERT INTO dbo.games (date, time, home_team, away_team, stadium) VALUES (
-                '${req.body.date}', '${req.body.time}','${req.body.home_team}', '${req.body.away_team}','${req.body.stadium}')`
+            `INSERT INTO dbo.games (date, time, home_team, away_team, stadium, referee) VALUES (
+                '${req.body.date}', '${req.body.time}','${req.body.home_team}', '${req.body.away_team}','${req.body.stadium}', '${req.body.referee}')`
         );
         res.status(201).send("game added");
     } catch (error) {
+        error.message = "couldn't add game";
+        error.status = 400;
         next(error);
     }
 });
@@ -53,11 +55,17 @@ router.post("/addGame", async(req, res, next) => {
 
 router.put("/updateGame/:gameId", async(req, res, next) => {
     try {
-        if(req.body.score === undefined)
+        if (req.body.score === undefined)
             throw { status: 401, message: "No score provided" }
+            // check if game exists
+        const rowExists = await DButils.execQuery(`if exists (select * from dbo.games where game_id = '${req.params.gameId}') 
+        select 'True'  
+        else 
+        select 'False' 
+        return`);
+        if (rowExists[0][""] === 'False')
+            throw { status: 401, message: "No such game" }
         await DButils.execQuery(`update dbo.games set score = '${req.body.score}' where game_id = '${req.params.gameId}'`);
-        // if(!rowUpdated)
-        //     throw { status: 401, message: "No such game"}
         res.status(201).send("game updated");
     } catch (error) {
         next(error);
@@ -66,8 +74,8 @@ router.put("/updateGame/:gameId", async(req, res, next) => {
 
 router.post("/insertActivity", async(req, res, next) => {
     try {
-        await DButils.execQuery(`insert into dbo.game_activity (game_id, date, time, minute, description) VALUES (
-            '${req.body.gameId}', '${req.body.date}','${req.body.time}', '${req.body.minute}','${req.body.description}') `);
+        await DButils.execQuery(`insert into dbo.game_activity (game_id, date, time, minute, event_type, player_name1, player_name2) VALUES (
+            '${req.body.gameId}', '${req.body.date}','${req.body.time}', '${req.body.minute}','${req.body.event_type}', '${req.body.player_name1}', '${req.body.player_name2}') `);
         res.status(201).send("activity added");
 
     } catch (error) {
