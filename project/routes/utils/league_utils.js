@@ -32,9 +32,11 @@ async function getLeagueDetails() {
     }
 }
 
+
 async function getLeagueGames() {
     try {
         const table_game = (await DButils.execQuery("select * from games"));
+        // table_game["activity"] = (await DButils.execQuery("select * from dbo.game_activity"));
         return table_game;
     } catch (error) {
         return null
@@ -45,7 +47,7 @@ async function sortLeagueGames(value) {
     try {
         const sorted_table = (await DButils.execQuery(`select * FROM games order by '${value}'asc`));
         return sorted_table;
-    } catch (error){
+    } catch (error) {
         return null
     }
 }

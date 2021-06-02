@@ -7,7 +7,9 @@ const adminId = 3;
 
 router.get("/getAllGames", async(req, res, next) => {
     try {
-        const league_game = await league_utils.getLeagueGames();
+        const league_game = {};
+        league_game.game = await league_utils.getLeagueGames();
+        league_game.activity = await DButils.execQuery("select * from dbo.game_activity");
         if (!league_game)
             throw { status: 400, message: "Search failed" };
         res.send(league_game);
