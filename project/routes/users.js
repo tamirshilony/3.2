@@ -26,7 +26,7 @@ router.use(async function(req, res, next) {
 /**
  * This path gets body with playerId and save this player in the favorites list of the logged-in user
  */
-router.post("/favoritePlayers", async(req, res, next) => {
+router.post("/addFavoritePlayers", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         const player_id = req.body.playerId;
@@ -40,7 +40,7 @@ router.post("/favoritePlayers", async(req, res, next) => {
 /**
  * This path returns the favorites players that were saved by the logged-in user
  */
-router.get("/favoritePlayers", async(req, res, next) => {
+router.get("/getFavoritePlayers", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         let favorite_players = {};
@@ -58,7 +58,7 @@ router.get("/favoritePlayers", async(req, res, next) => {
  * This path gets body with teamId and save this team in the favorites list of the logged-in user
  */
 
-router.post("/favoriteTeams", async(req, res, next) => {
+router.post("/addFavoriteTeams", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         const team_id = req.body.team_id;
@@ -72,7 +72,7 @@ router.post("/favoriteTeams", async(req, res, next) => {
 /**
  * This path returns the favorites teams that were saved by the logged-in user
  */
-router.get("/favoriteTeams", async(req, res, next) => {
+router.get("/getFavoriteTeams", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         let favorite_teams = {};
@@ -90,7 +90,7 @@ router.get("/favoriteTeams", async(req, res, next) => {
  * This path gets body with gameId and save this game in the favorites list of the logged-in user
  */
 
-router.post("/favoriteGames", async(req, res, next) => {
+router.post("/addFavoriteGames", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         const game_id = req.body.game_id;
@@ -104,7 +104,7 @@ router.post("/favoriteGames", async(req, res, next) => {
 /**
  * This path returns the favorites games that were saved by the logged-in user
  */
-router.get("/favoriteGames", async(req, res, next) => {
+router.get("/getFavoriteGames", async(req, res, next) => {
     try {
         const user_id = req.session.user_id;
         let favorite_games = {};
