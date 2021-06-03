@@ -57,6 +57,25 @@ async function getTeamById(team_id) {
     return extractReleventTeamData(team_info);
 }
 
+async function getTeamByIds(teams_id) {
+    let promises = [];
+
+    teams_id.map((id) =>
+        promises.push(
+            axios.get(`${api_domain}/teams/${id}`, {
+                params: {
+                    api_token: process.env.api_token,
+                },
+            })
+        )
+    );
+    //decapsulate data
+    let teams_info = await Promise.all(promises);
+    teams_info = teams_info[0].data.data;
+    return extractReleventTeamsData(teams_info);
+}
+
+
 async function getRoundNameById(round_id) {
     const round_info = await axios.get(`${api_domain}/rounds/${round_id}`, {
         params: {
@@ -74,6 +93,19 @@ function extractReleventTeamData(team) {
         logo: logo_path,
     };
 }
+
+
+function extractReleventTeamsData(teams_info) {
+    return teams_info.map((team_info) => {
+        const { id, name, logo_path } = teams_info;
+        return {
+            id: id,
+            name: name,
+            logo: logo_path,
+        };
+    });
+}
+
 
 async function extractFullTeamData(team_info) {
     let past_promises = [];
@@ -155,3 +187,5 @@ exports.isSuperligaTeam = isSuperligaTeam;
 exports.searchTeamsByName = searchTeamsByName;
 exports.getTeamById = getTeamById;
 exports.getTeamFullData = getTeamFullData;
+exports.extractReleventTeamsData = extractReleventTeamsData;
+exports.getTeamByIds = getTeamByIds;

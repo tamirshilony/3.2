@@ -2,9 +2,9 @@ var express = require("express");
 var router = express.Router();
 const DButils = require("../routes/utils/DButils");
 const league_utils = require("./utils/league_utils");
-const adminId = 3;
+const adminId = 1;
 
-
+// those first 2 function will use in the current fixture page
 router.get("/getAllGames", async(req, res, next) => {
     try {
         const league_game = {};

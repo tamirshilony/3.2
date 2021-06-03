@@ -28,10 +28,6 @@ async function infoById(id) {
     return info;
 }
 
-async function fillterPlayers(players_id, fiilter) {
-
-
-}
 
 async function getPlayerIdsByName(player_name) {
     let players_ids_list = [];

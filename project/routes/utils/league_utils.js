@@ -36,12 +36,12 @@ async function getLeagueDetails() {
 async function getLeagueGames() {
     try {
         const table_game = (await DButils.execQuery("select * from games"));
-        // table_game["activity"] = (await DButils.execQuery("select * from dbo.game_activity"));
         return table_game;
     } catch (error) {
         return null
     }
 }
+
 
 async function sortLeagueGames(value) {
     try {

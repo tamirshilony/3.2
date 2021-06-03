@@ -30,6 +30,8 @@ router.post("/Register", async(req, res, next) => {
         await DButils.execQuery(
             `INSERT INTO dbo.users (username, password, fname, lname, country, email, pic) VALUES ('${req.body.username}', '${hash_password}','${req.body.firstname}', '${req.body.lastname}','${req.body.country}','${req.body.email}','${req.body.image_url}')`
         );
+        // create favorites table
+
         res.status(201).send("user created");
     } catch (error) {
         next(error);
