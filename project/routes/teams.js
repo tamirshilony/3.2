@@ -18,22 +18,10 @@ router.get("/teamSearch/:teamName", async(req, res, next) => {
     }
 })
 
-// router.get("/getTeamById/:teamId", async(req, res, next) => {
-//     try {
-//         // get all id that match the teamName
-//         const teams_details = await teams_utils.getTeamById(req.params.teamId);
-//         res.send(teams_details);
-//     } catch (error) {
-//         error.message = "No such team ID";
-//         error.status = 400;
-//         next(error);
-//     }
-// })
-
 router.get("/getTeamById/:teamId", async(req, res, next) => {
     try {
         // get all id that match the teamName
-        const teams_details = await teams_utils.getTeamsByIds([939,66,62]);
+        const teams_details = await teams_utils.getTeamById(req.params.teamId);
         res.send(teams_details);
     } catch (error) {
         error.message = "No such team ID";
@@ -41,6 +29,7 @@ router.get("/getTeamById/:teamId", async(req, res, next) => {
         next(error);
     }
 })
+
 
 router.get("/getTeamFullData/:teamId", async(req, res, next) => {
     try {

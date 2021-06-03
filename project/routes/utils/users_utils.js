@@ -40,11 +40,9 @@ async function getFavoriteGamesId(user_id) {
 }
 
 async function getFavoriteGames(games_ids) {
-    const games_details = {};
-    games_details.game = await DButils.execQuery(
+    const games_details = await DButils.execQuery(
         `select * from games where game_id in (${games_ids}) `
     );
-    games_details.activity = await DButils.execQuery(`select * from dbo.game_activity where game_id in (${games_ids}) ORDER BY game_id `);
     return games_details;
 }
 
