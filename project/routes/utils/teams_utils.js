@@ -75,6 +75,14 @@ async function getTeamByIds(teams_id) {
     return extractReleventTeamsData(teams_info);
 }
 
+async function getTeamsByIds(teams_ids){
+    let promises = [];
+    teams_ids.map((id) =>
+        promises.push(getTeamById(id))
+    );
+    let teams = await Promise.all(promises);
+    return teams;    
+}
 
 async function getRoundNameById(round_id) {
     const round_info = await axios.get(`${api_domain}/rounds/${round_id}`, {
@@ -189,3 +197,4 @@ exports.getTeamById = getTeamById;
 exports.getTeamFullData = getTeamFullData;
 exports.extractReleventTeamsData = extractReleventTeamsData;
 exports.getTeamByIds = getTeamByIds;
+exports.getTeamsByIds = getTeamsByIds;
