@@ -12,19 +12,25 @@ async function getLeagueDetails() {
             },
         }
     );
-    const stage = await axios.get(
-        `${api_domain}/stages/${league.data.data.current_stage_id}`, {
-            params: {
-                api_token: process.env.api_token,
-            },
-        }
-    );
+    if (league.data.data.current_stage_id === null)
+        stage_id = "TBD";
+    else {
+        const stage = await axios.get(
+            `${api_domain}/stages/${league.data.data.current_stage_id}`, {
+                params: {
+                    api_token: process.env.api_token,
+                },
+            }
+        );
+        stage_id = stage.data.data.name;
+    }
     try {
-        const game = (await DButils.execQuery("SELECT top 1 * FROM games order by date,time asc"));
+        const game = (await DButils.execQuery("SELECT top 1 date,time,home_team,away_team,stadium,referee FROM games order by date,time asc"));
+
         return {
             league_name: league.data.data.name,
             current_season_name: league.data.data.season.data.name,
-            current_stage_name: stage.data.data.name,
+            current_stage_name: stage_id,
             next_game: game
         };
     } catch (error) {
@@ -45,8 +51,10 @@ async function getLeagueGames() {
 
 async function sortLeagueGames(value) {
     try {
-        const sorted_table = (await DButils.execQuery(`select * FROM games order by '${value}'asc`));
-        return sorted_table;
+        const results = {};
+        results.game = (await DButils.execQuery(`select * FROM games order by '${value}'asc`));
+        results.activity = await DButils.execQuery("select * from dbo.game_activity order by game_id");
+        return results;
     } catch (error) {
         return null
     }
