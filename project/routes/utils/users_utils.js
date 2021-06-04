@@ -41,7 +41,7 @@ async function getFavoriteGamesId(user_id) {
 
 async function getFavoriteGames(games_ids) {
     const games_details = await DButils.execQuery(
-        `select * from games where game_id in (${games_ids}) `
+        `select date,time,home_team,away_team,stadium,referee from games where game_id in (${games_ids}) `
     );
     return games_details;
 }
