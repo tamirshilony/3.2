@@ -33,6 +33,10 @@ router.post("/addFavoritePlayers", async(req, res, next) => {
         await users_utils.markPlayerAsFavorite(user_id, player_id);
         res.status(201).send("The player successfully saved as favorite");
     } catch (error) {
+        if (error.class === 14) {
+            error.status = 200;
+            error.message = "player is already in favorites"
+        }
         next(error);
     }
 });
@@ -48,9 +52,11 @@ router.get("/getFavoritePlayers", async(req, res, next) => {
         let player_ids_array = [];
         player_ids.map((element) => player_ids_array.push(element.player_id)); //extracting the players ids into array
         if (player_ids_array.length === 0)
-            throw { status: 200, message: " there are no favorites players" };
-        const results = await players_utils.getPlayersInfo(player_ids_array);
-        res.status(200).send(results);
+            res.status(200).send(" there are no favorites players");
+        else {
+            const results = await players_utils.getPlayersInfo(player_ids_array);
+            res.status(200).send(results);
+        }
     } catch (error) {
         next(error);
     }
@@ -67,6 +73,10 @@ router.post("/addFavoriteTeams", async(req, res, next) => {
         await users_utils.markTeamAsFavorite(user_id, team_id);
         res.status(201).send("The team successfully saved as favorite");
     } catch (error) {
+        if (error.class === 14) {
+            error.status = 200;
+            error.message = "team is already in favorites"
+        }
         next(error);
     }
 });
@@ -82,9 +92,11 @@ router.get("/getFavoriteTeams", async(req, res, next) => {
         let teams_ids_array = [];
         teams_ids.map((element) => teams_ids_array.push(element.team_id)); //extracting the teams ids into array
         if (teams_ids_array.length === 0)
-            throw { status: 200, message: " there are no favorites teams" };
-        const results = await teams_utils.getTeamsByIds(teams_ids_array);
-        res.status(200).send(results);
+            res.status(200).send(" there are no favorites teams");
+        else {
+            const results = await teams_utils.getTeamsByIds(teams_ids_array);
+            res.status(200).send(results);
+        }
     } catch (error) {
         next(error);
     }
@@ -101,6 +113,10 @@ router.post("/addFavoriteGames", async(req, res, next) => {
         await users_utils.markGameAsFavorite(user_id, game_id);
         res.status(201).send("The game successfully saved as favorite");
     } catch (error) {
+        if (error.class === 14) {
+            error.status = 200;
+            error.message = "game is already in favorites"
+        }
         next(error);
     }
 });
@@ -117,9 +133,11 @@ router.get("/getFavoritesGames", async(req, res, next) => {
         games_ids.map((element) => games_ids_array.push(element.game_id)); //extracting the games ids into array
         let game_id_list = games_ids_array.map(function(a) { return "'" + a + "'"; }).join(","); // make it list for query
         if (game_id_list === '')
-            throw { status: 200, message: " there are no favorites games" };
-        const results = await users_utils.getFavoriteGames(game_id_list);
-        res.status(200).send(results);
+            res.status(200).send(" there are no favorites games");
+        else {
+            const results = await users_utils.getFavoriteGames(game_id_list);
+            res.status(200).send(results);
+        }
     } catch (error) {
         next(error);
     }
