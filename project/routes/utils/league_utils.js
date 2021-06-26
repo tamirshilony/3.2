@@ -25,7 +25,7 @@ async function getLeagueDetails() {
         stage_id = stage.data.data.name;
     }
     try {
-        const game = (await DButils.execQuery("SELECT top 1 date,time,home_team,away_team,stadium,referee FROM games order by date,time asc"));
+        const game = (await DButils.execQuery("SELECT top 1 date,time,home_team,away_team,stadium,referee FROM games where date >=CAST(GETDATE() AS DATE) and time > CAST(GETDATE() AS TIME) order by date,time asc"));
 
         return {
             league_name: league.data.data.name,
